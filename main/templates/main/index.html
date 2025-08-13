@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+</head>
+<body class="bg-f0f8ff font-poppins">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md py-4 px-8 flex justify-between items-center">
+        <h1 class="text-2xl font-semibold text-blue-700">Healthcare Portal</h1>
+        <div>
+            <a href="#" class="text-gray-700 hover:text-blue-700 mx-4">Home</a>
+            <a href="#" class="text-gray-700 hover:text-blue-700 mx-4">Hospitals</a>
+            <a href="#" class="text-gray-700 hover:text-blue-700 mx-4">Appointments</a>
+            <a href="#" class="text-gray-700 hover:text-blue-700 mx-4">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white text-center py-20">
+        <h2 class="text-4xl font-bold mb-4">Find the Best Hospitals & Doctors Near You</h2>
+        <p class="text-lg mb-6">Search, view, and book appointments with healthcare providers in your locality.</p>
+        <button class="bg-white text-blue-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">Get Started</button>
+    </section>
+
+    <!-- Search Bar -->
+    <div class="flex justify-center my-12 px-4">
+        <form method="get" class="w-full max-w-md flex">
+            <input
+                type="text"
+                name="q"
+                placeholder="Search hospitals or doctors..."
+                value="{{ query }}"
+                class="flex-grow p-3 rounded-l-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+            <button
+                type="submit"
+                class="bg-blue-600 text-white px-4 rounded-r-lg hover:bg-blue-700 transition"
+            >
+                Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Hospitals & Doctors Cards -->
+    <section class="py-16 px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for hospital in hospitals %}
+        <div class="hospital-card bg-white rounded-xl p-6 card-shadow">
+            {% if hospital.image_url %}
+            <img src="{{ hospital.image_url }}" alt="{{ hospital.name }}" class="rounded mb-4">
+            {% endif %}
+
+            <h3 class="text-xl font-semibold mb-2">{{ hospital.name }}</h3>
+            <p class="text-gray-600 mb-2">{{ hospital.address }}</p>
+
+            {% if hospital.doctors.all %}
+                <h4 class="font-semibold mt-2">Doctors:</h4>
+                <ul class="list-disc list-inside text-gray-700">
+                    {% for doctor in hospital.doctors.all %}
+                        <li>
+                            {{ doctor.name }} - {{ doctor.specialization }}
+                            <a href="{% url 'book_appointment' doctor.id %}" class="text-blue-600 hover:underline ml-2">Book</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-gray-500 text-sm">No doctors listed.</p>
+            {% endif %}
+        </div>
+        {% empty %}
+        <p class="text-gray-600 text-center col-span-full">No hospitals or doctors found.</p>
+        {% endfor %}
+    </section>
+
+</body>
+</html>
+
+

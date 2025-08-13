@@ -1,0 +1,17 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f8ff;
+}
+
+.gradient-bg {
+    background: linear-gradient(135deg, #4f7cac 0%, #91c4e6 100%);
+}
+
+.card-shadow {
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+}
+
+.hospital-card:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+}
